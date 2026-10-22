@@ -16,6 +16,9 @@ COPY attendance.war /usr/local/tomcat/webapps/attendance.war
 #  /attendance, but Question 1 expects the root URL to work)
 COPY attendance.war /usr/local/tomcat/webapps/ROOT.war
 
+# Keep the JVM small so the app also fits low-memory free tiers (256MB/128MB)
+ENV JAVA_OPTS="-Xms32m -Xmx96m -XX:MaxMetaspaceSize=64m -Xss256k -XX:+UseSerialGC"
+
 # Use an entry point that adapts the port to Render's PORT variable
 COPY entrypoint.sh /usr/local/tomcat/bin/entrypoint.sh
 RUN chmod +x /usr/local/tomcat/bin/entrypoint.sh
